@@ -1,0 +1,3 @@
+[submodule "pointer_generator"]
+	path = pointer_generator
+	url = https://github.com/becxer/pointer-generator.git
