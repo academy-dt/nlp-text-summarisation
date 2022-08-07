@@ -131,9 +131,6 @@ dmypy.json
 # dataset
 dataset/
 
-# Models
-model/
-
 # MacOS 
 .DS_Store
 

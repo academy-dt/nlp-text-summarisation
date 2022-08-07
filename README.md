@@ -7,7 +7,7 @@ Retention of properties during text summarisation
 Download the 'FINISHED FILES' from: https://github.com/JafferWilson/Process-Data-of-CNN-DailyMail
 Unzip them into the `dataset` directory. The following path should be a valid one: `./dataset/chunked/train_000.bin`.
 
-## Steps to run
+## Prepare Python environment
 
 First, initialize the project once by running the following command:
 ```
@@ -22,7 +22,18 @@ This steps should handle multiple things, including, but not limited to:
 
 ### LDA
 
-First, train an LDA model once (Takes around 30min on a MacBook Pro):
+First, pre-compute the resources:
 ```
-python lda_trainer.py './dataset/chunked/train_*.bin' "$PWD/model/xxx"
+python ./compute_resources.py './dataset/chunked/train_*.bin' ./vocab ./tf_idf
 ```
+NOTE: On my Macbook Pro laptop, this step takes ~15min.
+
+Then, use grid-search to find the optimal LDA model:
+```
+TBD
+```
+NOTE: At the moment, the `lda.ipynb` notebook only generates multiple models based on the grid search. The part that chooses the best one based on the perplexity is still in the works.
+
+### Summarization
+
+TBD

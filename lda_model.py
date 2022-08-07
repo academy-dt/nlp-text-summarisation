@@ -1,5 +1,5 @@
 from gensim.test.utils import datapath
-from gensim import models
+from gensim.models import LdaMulticore
 
 class LdaModel():
 
@@ -9,7 +9,7 @@ class LdaModel():
     @staticmethod
     def load(model_path):
         model_datapath = datapath(model_path)
-        gensim_model = models.LdaModel.load(model_datapath)
+        gensim_model = LdaMulticore.load(model_datapath)
         return LdaModel(gensim_model)
 
     @property
