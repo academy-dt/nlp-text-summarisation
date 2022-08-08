@@ -1,7 +1,5 @@
-from lda_preprocessor import PreProcessor
+from generators import get_cnn_dm_abstract_generator, get_cnn_dm_article_generator
 from lda_model import LdaModel
-
-from cnn_dm import CnnDailyMail
 
 from scipy.special import rel_entr
 from statistics import mean
@@ -11,10 +9,8 @@ from logging import config
 
 class LdaEvaluator():
 
-    def __init__(self, pp, model, zero_p=1e-7):
+    def __init__(self, model, zero_p=1e-7):
         self.__zero_p = zero_p
-
-        self.__pp = pp
         self.__model = model
 
     # TODO: Consider using ELBO, reference: http://www.cs.cmu.edu/~mgormley/courses/10418/slides/lecture21-variational.pdf
@@ -30,19 +26,24 @@ class LdaEvaluator():
         return sum(rel_entr(original_p, summary_p))
 
     def distance(self, original, summary):
-        original_topics = self.__model.predict_topics(self.__pp.process_doc(original))
-        summary_topics = self.__model.predict_topics(self.__pp.process_doc(summary))
+        original_topics = self.__model.predict_topics(original)
+        summary_topics = self.__model.predict_topics(summary)
         return self.__topics_kl(original_topics, summary_topics)
 
-def eval_cnn_dm_model(data_path, model_name):
-    data_gen = CnnDailyMail.generator(data_path)
+def eval_cnn_dm_model(data_path, model_path):
+    lda = LdaModel.load(model_path)
 
-    pp = PreProcessor()
-    lda = LdaModel.load(model_name)
-    evaluator = LdaEvaluator(pp, lda)
+    from generators import get_bow_generator
+    
+    article_gen = get_cnn_dm_article_generator(data_path)
+    article_bow_gen = get_bow_generator(article_gen, lda.dictionary)
 
+    abstract_gen = get_cnn_dm_abstract_generator(data_path)
+    abstract_bow_gen = get_bow_generator(abstract_gen, lda.dictionary)
+
+    evaluator = LdaEvaluator(lda)
     distances = [evaluator.distance(article, abstract)
-                for article, abstract in data_gen]
+                for article, abstract in zip(article_bow_gen, abstract_bow_gen)]
     logging.info(f'Mean distance: {mean(distances)}')
 
 if __name__ == '__main__':
@@ -51,7 +52,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Evaluate an LDA model')
     parser.add_argument('data_path', type=str, help='the data to use for evaluation')
-    parser.add_argument('model_name', type=str, help='The name of the model to load')
+    parser.add_argument('model_path', type=str, help='The path of the model to load')
     args = parser.parse_args()
 
-    eval_cnn_dm_model(args.data_path, args.model_name)
+    eval_cnn_dm_model(args.data_path, args.model_path)

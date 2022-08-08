@@ -51,8 +51,9 @@ class TfIdfComputer():
         return self.__tf_idf
 
 def compute_resources(data_path, dict_path, tf_idf_path):
-    from generators import get_pp_generator
-    gen = get_pp_generator(data_path)
+    from generators import get_cnn_dm_article_generator, get_pp_generator
+    cnn_dm_gen = get_cnn_dm_article_generator(data_path)
+    gen = get_pp_generator(cnn_dm_gen)
 
     logging.info('Reading pre-processed corpus')
     corpus = list(gen)

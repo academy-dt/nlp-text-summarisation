@@ -16,9 +16,12 @@ class LdaModel():
     def num_topics(self):
         return self.__model.num_topics
 
-    def predict_topics(self, preprocessed_doc):
-        doc_bow = self.__model.id2word.doc2bow(preprocessed_doc)
-        return sorted(self.__model[doc_bow], reverse=True, key=lambda tup: tup[1])
+    @property
+    def dictionary(self):
+        return self.__model.id2word
+
+    def predict_topics(self, bow_doc):
+        return sorted(self.__model[bow_doc], reverse=True, key=lambda tup: tup[1])
 
     def print_topics(self):
         for idx, topic in self.__model.print_topics(-1):
