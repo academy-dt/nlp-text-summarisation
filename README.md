@@ -22,17 +22,18 @@ This steps should handle multiple things, including, but not limited to:
 
 ### LDA
 
-First, pre-compute the resources:
+Sanity check that pre-computation works:
+```
+python ./compute_resources.py './dataset/chunked/train_000.bin' ./vocab000 ./tf_idf000
+```
+
+Now, pre-compute the resources from the entire training set:
 ```
 python ./compute_resources.py './dataset/chunked/train_*.bin' ./vocab ./tf_idf
 ```
 NOTE: On my Macbook Pro laptop, this step takes ~15min.
 
-Then, use grid-search to find the optimal LDA model:
-```
-TBD
-```
-NOTE: At the moment, the `lda.ipynb` notebook only generates multiple models based on the grid search. The part that chooses the best one based on the perplexity is still in the works.
+The `lda.ipynb` notebook generates multiple models based on the grid search. The part that chooses the best one based on the perplexity is still manual.
 
 ### Summarization
 

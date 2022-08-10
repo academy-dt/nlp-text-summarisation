@@ -1,5 +1,6 @@
 import logging
 
+#data_path = './dataset/chunked/test_*.bin'
 def get_cnn_dm_abstract_generator(data_path):
     logging.info('Creating CNN/DailyMail abstract generator')
     from generate_cnn_dm import CnnDailyMailAbstractGenerator
