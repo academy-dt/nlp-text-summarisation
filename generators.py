@@ -1,5 +1,16 @@
 import logging
 
+def get_cnn_dm_both_generator(data_path):
+    '''
+    This generator returns a tuple every time (article, abstract)
+    This is the only generator that you CANNOT use with the other
+    preprocessing generators, because they expect a single value
+    every time.
+    '''
+    logging.info('Creating CNN/DailyMail abstract generator')
+    from generate_cnn_dm import CnnDailyMailBothGenerator
+    return CnnDailyMailBothGenerator(data_path)
+
 def get_cnn_dm_abstract_generator(data_path):
     logging.info('Creating CNN/DailyMail abstract generator')
     from generate_cnn_dm import CnnDailyMailAbstractGenerator
