@@ -131,6 +131,9 @@ dmypy.json
 # dataset
 dataset/
 
+# temp models
+model_archive/
+
 # MacOS 
 .DS_Store
 
