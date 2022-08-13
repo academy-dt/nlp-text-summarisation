@@ -4,7 +4,7 @@ from logging import config
 from gensim.corpora import Dictionary
 from gensim.models import TfidfModel
 
-from generate_bow import BowGenerator
+from generate_bow import BowProcessor
 
 class DictionaryComputer():
 
@@ -37,14 +37,11 @@ class DictionaryComputer():
 class TfIdfComputer():
 
     def __init__(self, corpus, dictionary):
-        self.__dictionary = dictionary
-        self.__corpus = corpus
-        self.__tf_idf = self.__get_tf_idf(self.__corpus, self.__dictionary)
+        self.__bow = BowProcessor(dictionary)
+        self.__tf_idf = self.__get_tf_idf(corpus)
 
-    @staticmethod
-    def __get_tf_idf(corpus, dictionary):
-        bow = BowGenerator.from_iterable(corpus, dictionary)
-        return TfidfModel(corpus=bow, id2word=dictionary.id2token)
+    def __get_tf_idf(self, corpus):
+        return TfidfModel(corpus=self.__bow(corpus), id2word=self.__bow.dictionary.id2token)
 
     @property
     def tf_idf(self):

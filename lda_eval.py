@@ -23,7 +23,7 @@ class LdaEvaluator():
     def __topics_kl(self, original_topics, summary_topics):
         original_p = self.__topic_p(original_topics)
         summary_p = self.__topic_p(summary_topics)
-        return sum(rel_entr(original_p, summary_p))
+        return sum(rel_entr(original_p, summary_p)) + sum(rel_entr(summary_p, original_p))
 
     def distance(self, original, summary):
         original_topics = self.__model.predict_topics(original)
