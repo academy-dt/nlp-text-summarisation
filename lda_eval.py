@@ -29,30 +29,3 @@ class LdaEvaluator():
         original_topics = self.__model.predict_topics(original)
         summary_topics = self.__model.predict_topics(summary)
         return self.__topics_kl(original_topics, summary_topics)
-
-def eval_cnn_dm_model(data_path, model_path):
-    lda = LdaModel.load(model_path)
-
-    from generators import get_bow_generator
-    
-    article_gen = get_cnn_dm_article_generator(data_path)
-    article_bow_gen = get_bow_generator(article_gen, lda.dictionary)
-
-    abstract_gen = get_cnn_dm_abstract_generator(data_path)
-    abstract_bow_gen = get_bow_generator(abstract_gen, lda.dictionary)
-
-    evaluator = LdaEvaluator(lda)
-    distances = [evaluator.distance(article, abstract)
-                for article, abstract in zip(article_bow_gen, abstract_bow_gen)]
-    logging.info(f'Mean distance: {mean(distances)}')
-
-if __name__ == '__main__':
-    config.fileConfig('./logging.conf')
-
-    import argparse
-    parser = argparse.ArgumentParser(description='Evaluate an LDA model')
-    parser.add_argument('data_path', type=str, help='the data to use for evaluation')
-    parser.add_argument('model_path', type=str, help='The path of the model to load')
-    args = parser.parse_args()
-
-    eval_cnn_dm_model(args.data_path, args.model_path)
