@@ -1,11 +1,4 @@
-from generators import get_cnn_dm_abstract_generator, get_cnn_dm_article_generator
-from lda_model import LdaModel
-
 from scipy.special import rel_entr
-from statistics import mean
-
-import logging
-from logging import config
 
 class LdaEvaluator():
 
