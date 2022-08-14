@@ -20,6 +20,14 @@ This steps should handle multiple things, including, but not limited to:
 - Install Python prerequisites
 - Run Python init script
 
+### Summarization
+
+Three notebooks support summarization using pre-trained models:
+
+- `bart-cnn.ipynb` (And `bart-cnn-colab.ipynb` which contains extra snippets for colab)
+- `t5_summarize.ipynb`
+- `pegasus_xsum.ipynb`
+
 ### LDA
 
 Sanity check that pre-computation works:
@@ -31,10 +39,7 @@ Now, pre-compute the resources from the entire training set:
 ```
 python ./compute_resources.py './dataset/chunked/train_*.bin' ./vocab ./tf_idf
 ```
-NOTE: On my Macbook Pro laptop, this step takes ~15min.
 
-The `lda.ipynb` notebook generates multiple models based on the grid search. The part that chooses the best one based on the perplexity is still manual.
+The `lda_train.ipynb` notebook generates multiple models based on the grid search. The part that chooses the best one based on the perplexity is still manual.
 
-### Summarization
-
-TBD
+The `lda_eval.ipynb` notebook evaluates multiple summarization models on the output files (e.g. `bart_output_.json`). The last part in the notebook allows a deeper dive into discrete examples and word-resolution topic analysis.
